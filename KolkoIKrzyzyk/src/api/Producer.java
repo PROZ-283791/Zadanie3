@@ -7,8 +7,11 @@ import javax.jms.JMSProducer;
 import javax.jms.Queue;
 
 public class Producer {
+	
 	public void sendQueueMessages(String name, int x, int y) {
 		ConnectionFactory connectionFactory = new com.sun.messaging.ConnectionFactory();
+		if (name == null)
+			return;
 		try {
 			// [hostName][:portNumber][/serviceName]
 			// 7676 numer portu, na którym JMS Service nasłuchuje połączeń
@@ -16,7 +19,7 @@ public class Producer {
 					.setProperty(com.sun.messaging.ConnectionConfiguration.imqAddressList, "localhost:7676/jms");
 			JMSContext jmsContext = connectionFactory.createContext();
 			JMSProducer jmsProducer = jmsContext.createProducer();
-			Queue queue = new com.sun.messaging.Queue("ATJQueue");
+			Queue queue = new com.sun.messaging.Queue("MyQueue123");
 			String msg = name+x+y;
 			jmsProducer.send(queue, msg);
 			jmsContext.close();

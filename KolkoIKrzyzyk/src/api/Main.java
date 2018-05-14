@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.Enumeration;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
@@ -28,6 +30,7 @@ public class Main extends Application {
 			GridPane root = fxmlLoader.load();
 			cont = fxmlLoader.getController();
 			receiveQueueMessagesAsynch();
+			cont.setProducer();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
@@ -46,7 +49,9 @@ public class Main extends Application {
 		try {
 			((com.sun.messaging.ConnectionFactory) connectionFactory)
 			.setProperty(com.sun.messaging.ConnectionConfiguration.imqAddressList, "localhost:7676/jms");
-			Queue queue = new com.sun.messaging.Queue("ATJQueue");
+			Queue queue = new com.sun.messaging.Queue("MyQueue123");
+			Enumeration e = jmsContext.createBrowser(queue).getEnumeration();
+			System.out.println(e.hasMoreElements());
 			JMSConsumer jmsConsumer = jmsContext.createConsumer(queue);
 			jmsConsumer.setMessageListener(new Consumer(cont));
 			
@@ -54,7 +59,7 @@ public class Main extends Application {
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-		//jmsContext.close();
+//		jmsContext.close();
 	}
 
 }

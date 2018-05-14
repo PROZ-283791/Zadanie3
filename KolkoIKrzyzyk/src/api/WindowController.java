@@ -17,8 +17,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class WindowController {
-	Producer producer = new Producer();
+	Producer producer;
 	String name = "X";
+	String justSend;
 	boolean myTurn = true;
 	@FXML
 	GridPane grid;
@@ -71,8 +72,9 @@ public class WindowController {
 			int x = Integer.parseInt(lbl.getId().substring(1, 2));
 			int y = Integer.parseInt(lbl.getId().substring(2, 3));
 			lbl.setText(name);
-			// myTurn = false;
+			myTurn = false;
 			lbl.setStyle("-fx-background-color: rgba(0,0,0,0);");
+			justSend = name + x + y;
 			producer.sendQueueMessages(name, x, y);
 			buffer.set(3 * y + x, name);
 			if (gameFinished(name, x, y)) {
@@ -105,6 +107,16 @@ public class WindowController {
 
 	String getName() {
 		return name;
+	}
+	String getJustSend() {
+		return justSend;
+	}
+	
+	Producer getProducer() {
+		return producer;
+	}
+	void setProducer() {
+		this.producer = new Producer();
 	}
 
 	boolean gameFinished(String symbol, int x, int y) {
