@@ -19,7 +19,7 @@ public class Producer {
 					.setProperty(com.sun.messaging.ConnectionConfiguration.imqAddressList, "localhost:7676/jms");
 			JMSContext jmsContext = connectionFactory.createContext();
 			JMSProducer jmsProducer = jmsContext.createProducer();
-			Queue queue = new com.sun.messaging.Queue("MyQueue123");
+			Queue queue = new com.sun.messaging.Queue("Queue");
 			String msg = name+x+y;
 			jmsProducer.send(queue, msg);
 			jmsContext.close();
