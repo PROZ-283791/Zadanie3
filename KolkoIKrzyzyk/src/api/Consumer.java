@@ -23,7 +23,7 @@ public class Consumer implements MessageListener {
 				con.getProducer().sendQueueMessages(textMessage.getText().substring(0, 1), x, y);
 			else
 				con.oponentMove(x, y);
-		} catch (JMSException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

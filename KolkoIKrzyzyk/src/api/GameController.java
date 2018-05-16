@@ -1,14 +1,21 @@
 package api;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class GameController {
 	ArrayList<String> buffer = new ArrayList<String>(9);
 	WindowController cont;
-	Stage stage;
+	Stage stage1;
 	Producer producer;
 	String name = "X";
 	String justSend;
@@ -16,7 +23,7 @@ public class GameController {
 
 	public GameController(WindowController cont, Stage stage) {
 		this.cont = cont;
-		this.stage = stage;
+		this.stage1 = stage;
 		for (int i=0; i<9;++i)
 			buffer.add("");
 	}
@@ -27,27 +34,30 @@ public class GameController {
 		producer.sendQueueMessages(name, x, y);
 		buffer.set(3 * y + x, name);
 		if (gameFinished(name, x, y)) {
+			myTurn = false;
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Koniec gry!");
 			alert.setHeaderText(null);
 			alert.setContentText("Wygrałeś!");
 			alert.showAndWait();
-			stage.close();
+			stage1.close();
 		}
 	}
 
-	public void oponentMove(int x, int y) {
+	public void oponentMove(int x, int y) throws IOException {
 		buffer.set(3 * y + x, name == "X" ? "O" : "X");
 		myTurn = true;
 		cont.drawOponent(x, y);
 		if (gameFinished(name == "X" ? "O" : "X", x, y)) {
+			Platform.runLater(() -> {
 			myTurn = false;
-			Alert alert = new Alert(AlertType.WARNING);
+			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Koniec gry!");
 			alert.setHeaderText(null);
 			alert.setContentText("Przegrałeś!");
 			alert.showAndWait();
-			stage.close();
+			stage1.close();
+			});
 		}
 	}
 
