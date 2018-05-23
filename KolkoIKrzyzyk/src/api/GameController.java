@@ -2,14 +2,9 @@ package api;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class GameController {
@@ -17,7 +12,7 @@ public class GameController {
 	WindowController cont;
 	Stage stage1;
 	Producer producer;
-	String name = "X";
+	String name = null;
 	String justSend;
 	boolean myTurn = true;
 
@@ -30,6 +25,8 @@ public class GameController {
 
 	public void myMove(int x, int y) {
 		myTurn = false;
+		if (name == null)
+			name = "X";
 		justSend = name + x + y;
 		producer.sendQueueMessages(name, x, y);
 		buffer.set(3 * y + x, name);
@@ -45,6 +42,8 @@ public class GameController {
 	}
 
 	public void oponentMove(int x, int y) throws IOException {
+		if (name == null)
+			name = "O";
 		buffer.set(3 * y + x, name == "X" ? "O" : "X");
 		myTurn = true;
 		cont.drawOponent(x, y);

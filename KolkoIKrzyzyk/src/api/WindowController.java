@@ -50,7 +50,7 @@ public class WindowController {
 	void clicked(MouseEvent e) {
 		Label lbl = (Label) e.getSource();
 		if (lbl.getText() == "" && cont.isMyTurn()) {
-			lbl.setText(cont.getName());
+			lbl.setText(cont.getName() == null ? "X" : cont.getName());
 			lbl.setStyle("-fx-background-color: rgba(0,0,0,0);");
 			int x = Integer.parseInt(lbl.getId().substring(1, 2));
 			int y = Integer.parseInt(lbl.getId().substring(2, 3));
