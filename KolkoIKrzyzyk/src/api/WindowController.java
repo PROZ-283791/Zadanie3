@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class WindowController {
-	GameController cont;
+	private GameController gameController;
 	@FXML
 	GridPane grid;
 	@FXML
@@ -34,14 +34,14 @@ public class WindowController {
 	@FXML
 	void hovered(MouseEvent e) {
 		Label lbl = (Label) e.getSource();
-		if (lbl.getText() == "" && cont.isMyTurn())
+		if (lbl.getText() == "" && gameController.isMyTurn())
 			lbl.setStyle("-fx-background-color: rgba(255,165,0,1);");
 	}
 
 	@FXML
 	void exited(MouseEvent e) {
 		Label lbl = (Label) e.getSource();
-		if (lbl.getText() == "" && cont.isMyTurn())
+		if (lbl.getText() == "" && gameController.isMyTurn())
 			lbl.setStyle("-fx-background-color: rgba(0,0,0,0);");
 
 	}
@@ -49,21 +49,21 @@ public class WindowController {
 	@FXML
 	void clicked(MouseEvent e) {
 		Label lbl = (Label) e.getSource();
-		if (lbl.getText() == "" && cont.isMyTurn()) {
-			lbl.setText(cont.getName() == null ? "X" : cont.getName());
+		if (lbl.getText() == "" && gameController.isMyTurn()) {
+			lbl.setText(gameController.getName() == null ? "X" : gameController.getName());
 			lbl.setStyle("-fx-background-color: rgba(0,0,0,0);");
 			int x = Integer.parseInt(lbl.getId().substring(1, 2));
 			int y = Integer.parseInt(lbl.getId().substring(2, 3));
-			cont.myMove(x, y);
+			gameController.myMove(x, y);
 		}
 	}
 
 	void drawOponent(int x, int y) {
 		ArrayList<Label> list = new ArrayList<Label>(Arrays.asList(l00, l10, l20, l01, l11, l21, l02, l12, l22));
-		Platform.runLater(() -> list.get(3 * y + x).setText(cont.getName() == "X" ? "O" : "X"));
+		Platform.runLater(() -> list.get(3 * y + x).setText(gameController.getName() == "X" ? "O" : "X"));
 	}
 	void setGameController(GameController cont) {
-		this.cont = cont;
+		this.gameController = cont;
 	}
 
 }

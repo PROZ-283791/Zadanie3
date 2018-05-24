@@ -4,6 +4,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
+import javax.jms.Message;
 import javax.jms.Queue;
 
 public class Producer {
@@ -13,17 +14,17 @@ public class Producer {
 		if (name == null)
 			return;
 		try {
-			// [hostName][:portNumber][/serviceName]
-			// 7676 numer portu, na którym JMS Service nasłuchuje połączeń
 			((com.sun.messaging.ConnectionFactory) connectionFactory)
 					.setProperty(com.sun.messaging.ConnectionConfiguration.imqAddressList, "localhost:7676/jms");
 			JMSContext jmsContext = connectionFactory.createContext();
 			JMSProducer jmsProducer = jmsContext.createProducer();
 			Queue queue = new com.sun.messaging.Queue("Queue");
-			String msg = name+x+y;
+			Message msg = jmsContext.createTextMessage();
+			msg.setStringProperty("msg", name+x+y);
+			msg.setStringProperty("ID", name);
 			jmsProducer.send(queue, msg);
 			jmsContext.close();
-			System.out.printf("Wiadomość '%s' została wysłana.\n", msg);
+			System.out.printf("Wiadomość '%s' została wysłana.\n", msg.getStringProperty("msg"));
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
