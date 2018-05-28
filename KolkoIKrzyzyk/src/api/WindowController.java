@@ -65,5 +65,9 @@ public class WindowController {
 	void setGameController(GameController cont) {
 		this.gameController = cont;
 	}
+	void clearScreen () {
+		ArrayList<Label> list = new ArrayList<Label>(Arrays.asList(l00, l10, l20, l01, l11, l21, l02, l12, l22));
+		list.forEach(x -> Platform.runLater(()-> x.setText("")));
+	}
 
 }

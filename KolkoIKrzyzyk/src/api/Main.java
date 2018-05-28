@@ -30,13 +30,17 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("Kółko i Krzyżyk");
-			primaryStage.setOnCloseRequest(x -> {primaryStage.close(); cons.getJMSConsumer().close();cons.getJMSContext().close();});
+			primaryStage.setOnCloseRequest(x -> {
+				if (gameController.getName() != null || (gameController.getMoves() > 0 && gameController.getPlayedGames() < 0))
+					gameController.getProducer().sendQueueMessages(gameController.getName(), 4,4);
+				primaryStage.close();
+				cons.getJMSConsumer().close();
+				cons.getJMSContext().close();
+			});
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 }
